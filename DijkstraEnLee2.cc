@@ -11,7 +11,7 @@ using namespace std;
     cout <<"Student number: s2972913 and s2882043" << endl;
     cout <<"Assignment 2: DeCoderen" << endl;
     cout <<"Date: 29-09-2020\n" << endl;
-    cout <<"-----------------------------------------------------------\n";
+    cout <<"-----------------------------------------------------------" << endl;
 }
 
 void startBeginningOfFile(ifstream & invoer){
@@ -64,6 +64,15 @@ int countChar(ifstream & invoer, ofstream & uitvoer){
     return i;
 }
 
+int numberReverse(int number){
+    int reversedNumber = 0;
+    while(number > 0){
+        reversedNumber = (reversedNumber * 10) + (number %10);
+        number = number/10;
+    }
+    return reversedNumber;
+}
+
 
    int main ( ) {
     ifstream invoer("invoer.txt", ios::in);
@@ -77,5 +86,6 @@ int countChar(ifstream & invoer, ofstream & uitvoer){
     cout << endl << "Count total characters: " << totalChars << endl;
     cout << "Count total 'de': " << totalDe << endl;
 
+    cout << numberReverse(5823);
      return 0;
    }//main
