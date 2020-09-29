@@ -5,12 +5,12 @@
 using namespace std;
 
  void informationBlock(){
-    cout <<"Makers: Jennifer Lee\n";
-    cout <<"Year of arrival: 2020\n";
-    cout <<"Field of study: Artificial intelligence\n";
-    cout <<"Student number: s2972913\n";
-    cout <<"Assignment 2: DeCoderen\n";
-    cout <<"Date: 22-09-2020\n\n";
+    cout <<"Makers: Jennifer Lee and Rachel Dijkstra" << endl;
+    cout <<"Year of arrival: 2020" << endl;
+    cout <<"Field of study: Artificial intelligence" << endl;
+    cout <<"Student number: s2972913 and s2882043" << endl;
+    cout <<"Assignment 2: DeCoderen" << endl;
+    cout <<"Date: 29-09-2020\n" << endl;
     cout <<"-----------------------------------------------------------\n";
 }
 
