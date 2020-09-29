@@ -14,7 +14,14 @@ using namespace std;
     cout <<"-----------------------------------------------------------\n";
 }
 
-int telDE (ifstream & invoer){
+void startBeginningOfFile(ifstream & invoer){
+    invoer.clear( );
+    invoer.seekg( 0, std::ios::beg );
+}
+
+int countDe (ifstream & invoer){
+    startBeginningOfFile(invoer);
+
     char kar = invoer.get ( );
     char prevKar = '\n';
     int i = 0; // locale teller
@@ -29,8 +36,10 @@ int telDE (ifstream & invoer){
     return i;
 }
 
-void test(ifstream & invoer, ofstream & uitvoer){
-char kar = invoer.get ( );
+int countChar(ifstream & invoer, ofstream & uitvoer){
+    startBeginningOfFile(invoer);
+
+    char kar = invoer.get ( );
     int i = 0;
     int number = 0;
     int lastNumber = 0;
@@ -52,6 +61,7 @@ char kar = invoer.get ( );
         kar = invoer.get();
         i++;
     }
+    return i;
 }
 
 
@@ -59,12 +69,13 @@ char kar = invoer.get ( );
     ifstream invoer("invoer.txt", ios::in);
     ofstream uitvoer("uitvoer.txt", ios::out);
 
-    int countDe = telDE(invoer);
-    test(invoer, uitvoer);
+    int totalChars = countChar(invoer, uitvoer);
+    int totalDe = countDe(invoer);
 
     invoer.close();
     uitvoer.close();
-    cout << endl << "Count total 'de': " << countDe << endl;
+    cout << endl << "Count total characters: " << totalChars << endl;
+    cout << "Count total 'de': " << totalDe << endl;
 
      return 0;
    }//main
