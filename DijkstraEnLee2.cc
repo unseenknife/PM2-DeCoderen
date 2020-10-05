@@ -91,7 +91,7 @@ void getNumbers(ifstream & input){
     int lastNumber = 0;
 
     while(!input.eof()){
-        if(isdigit(kar)){
+        if('0' <= kar && kar <= '9'){
             number = kar - '0';
             if(lastNumber != 0){
                 lastNumber = (lastNumber * 10) + number;
