@@ -3,11 +3,19 @@
 // Wat doet het programma:
 //
 // Compiler/programma: Code::Blocks
+<<<<<<< HEAD
 // Laatst bewerkt: 06-10-2020
 
 #include <iostream>
 #include <fstream>
 #include <ctype.h>
+=======
+// Laatst bewerkt: 05-10-2020
+
+ #include <iostream>
+ #include <fstream>
+ #include <ctype.h>
+>>>>>>> 97887b1894a13e453f0ea7ca78a1aa0034aa5fb0
 
 using namespace std;
 
@@ -25,6 +33,7 @@ using namespace std;
 }
 
 /**
+<<<<<<< HEAD
 * Questions to the user
 */
 void userQuestions(char & answer, string & inputName, string & outputName){
@@ -76,6 +85,43 @@ bool isPalindrome(int number){
 }
 
 /**
+=======
+* Set an input file to the beginning
+*
+* @param input, an ifstream argument
+*/
+void startBeginningOfFile(ifstream & input){
+    input.clear( );
+    input.seekg( 0, std::ios::beg );
+}
+
+/**
+* Reverse the given number
+*
+* @param number, an integer argument
+* @return the reversed number
+*/
+int numberReverse(int number){
+    int reversedNumber = 0;
+    while(number > 0){
+        reversedNumber = (reversedNumber * 10) + (number %10);
+        number = number/10;
+    }
+    return reversedNumber;
+}
+
+/**
+* Looks if a number is a palindrome
+*
+* @param number, an integer argument
+* @return bool if number is a palindrome
+*/
+bool isPalindrome(int number){
+    return (number == numberReverse(number));
+}
+
+/**
+>>>>>>> 97887b1894a13e453f0ea7ca78a1aa0034aa5fb0
 * Get the numbers of the input file and checks if they're lychrel numbers
 *
 * @param input, an input file
@@ -127,6 +173,7 @@ void getNumbers(ifstream & input){
 }
 
 int main ( ) {
+<<<<<<< HEAD
     char answer; string inputName; string outputName;
     informationBlock();
 
@@ -134,6 +181,12 @@ int main ( ) {
     ifstream input(inputName, ios::in);
     ofstream output(outputName, ios::out);
 
+=======
+    ifstream input("input.txt", ios::in);
+    ofstream output("output.txt", ios::out);
+
+    informationBlock();
+>>>>>>> 97887b1894a13e453f0ea7ca78a1aa0034aa5fb0
     getNumbers(input);
 
     input.close();
