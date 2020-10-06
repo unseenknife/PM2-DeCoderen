@@ -1,81 +1,142 @@
- #include <iostream>
- #include <fstream>
- #include <ctype.h>
+// Auteur: Rachel Dijkstra en Jennifer Lee
+// Bestand: DijkstraEnLee2.cc
+// Wat doet het programma:
+//
+// Compiler/programma: Code::Blocks
+// Laatst bewerkt: 06-10-2020
+
+#include <iostream>
+#include <fstream>
+#include <ctype.h>
 
 using namespace std;
 
+/**
+* Information block with the information of the makers
+*/
  void informationBlock(){
-    cout <<"Makers: Jennifer Lee and Rachel Dijkstra" << endl;
+    cout <<"Makers: Rachel Dijkstra and Jennifer Lee" << endl;
     cout <<"Year of arrival: 2020" << endl;
     cout <<"Field of study: Artificial intelligence" << endl;
-    cout <<"Student number: s2972913 and s2882043" << endl;
+    cout <<"Student number: s2882043 and s2972913" << endl;
     cout <<"Assignment 2: DeCoderen" << endl;
-    cout <<"Date: 29-09-2020\n" << endl;
-    cout <<"-----------------------------------------------------------\n";
+    cout <<"Date: 05-10-2020\n" << endl;
+    cout <<"-----------------------------------------------------------" << endl;
 }
 
-void startBeginningOfFile(ifstream & invoer){
-    invoer.clear( );
-    invoer.seekg( 0, std::ios::beg );
+/**
+* Questions to the user
+*/
+void userQuestions(char & answer, string & inputName, string & outputName){
+    cout << "Do you want to encode or decode?" << endl;
+    cout << "1. encode" << endl;
+    cout << "2. decode" << endl;
+    cin >> answer;
+
+    cout << "What is the name of your input file (whole file name): ";
+    cin >> inputName;
+
+    cout << "What for name do you want for your output file: ";
+    cin >> outputName;
 }
 
-int countDe (ifstream & invoer){
-    startBeginningOfFile(invoer);
+/**
+* Set an input file to the beginning
+*
+* @param input, an ifstream argument
+*/
+void startBeginningOfFile(ifstream & input){
+    input.clear( );
+    input.seekg( 0, std::ios::beg );
+}
 
-    char kar = invoer.get ( );
-    char prevKar = '\n';
-    int i = 0; // locale teller
-
-    while( !invoer.eof()){
-        if(prevKar == 'd' && kar == 'e'){
-            i++;
-        }
-        prevKar = kar;
-        kar = invoer.get();
+/**
+* Reverse the given number
+*
+* @param number, an integer argument
+* @return the reversed number
+*/
+int numberReverse(int number){
+    int reversedNumber = 0;
+    while(number > 0){
+        reversedNumber = (reversedNumber * 10) + (number %10);
+        number = number/10;
     }
-    return i;
+    return reversedNumber;
 }
 
-int countChar(ifstream & invoer, ofstream & uitvoer){
-    startBeginningOfFile(invoer);
+/**
+* Looks if a number is a palindrome
+*
+* @param number, an integer argument
+* @return bool if number is a palindrome
+*/
+bool isPalindrome(int number){
+    return (number == numberReverse(number));
+}
 
-    char kar = invoer.get ( );
-    int i = 0;
+/**
+* Get the numbers of the input file and checks if they're lychrel numbers
+*
+* @param input, an input file
+* @return bool if number is a palindrome
+*/
+bool isLychrel(int number){
+    int temp = number;
+    int reversedNumber;
+    for(int i = 0; i < 500; i++){
+        reversedNumber = numberReverse(temp);
+        if(isPalindrome(reversedNumber + number)){
+            return false;
+        }
+        temp = temp + reversedNumber;
+    }
+    return true;
+}
+
+/**
+* Get the numbers of the input file and checks if they're lychrel numbers
+*
+* @param input, an input file
+*/
+void getNumbers(ifstream & input){
+    startBeginningOfFile(input);
+
+    char kar = input.get();
     int number = 0;
     int lastNumber = 0;
-    while( !invoer.eof ( )){
-        uitvoer.put(kar);
-        if(isdigit(kar)){
+
+    while(!input.eof()){
+        if('0' <= kar && kar <= '9'){
             number = kar - '0';
             if(lastNumber != 0){
-                number = (lastNumber * 10) + number;
+                lastNumber = (lastNumber * 10) + number;
             }
-            lastNumber = number;
-        }else{
-            cout << kar;
-            if(lastNumber != 0){
-                cout << lastNumber * lastNumber;
+            else{
+                lastNumber = number;
+            }
+        }
+        else{
+            if(lastNumber != 0 && isLychrel(lastNumber)){
+                cout << lastNumber << " is a Lychrel number" << endl;
             }
             lastNumber = 0;
         }
-        kar = invoer.get();
-        i++;
+        kar = input.get();
     }
-    return i;
 }
 
+int main ( ) {
+    char answer; string inputName; string outputName;
+    informationBlock();
 
-   int main ( ) {
-    ifstream invoer("invoer.txt", ios::in);
-    ofstream uitvoer("uitvoer.txt", ios::out);
+    userQuestions(answer, inputName, outputName);
+    ifstream input(inputName, ios::in);
+    ofstream output(outputName, ios::out);
 
-    int totalChars = countChar(invoer, uitvoer);
-    int totalDe = countDe(invoer);
+    getNumbers(input);
 
-    invoer.close();
-    uitvoer.close();
-    cout << endl << "Count total characters: " << totalChars << endl;
-    cout << "Count total 'de': " << totalDe << endl;
-
-     return 0;
-   }//main
+    input.close();
+    output.close();
+    return 0;
+}//main
