@@ -32,7 +32,7 @@ void userQuestions(char & answer, string & inputName, string & outputName){
     cout << "2. decode" << endl;
     cin >> answer;
 
-    cout << "What is the name of your input file (whole file name): ";
+    cout << "What is the name of your input file: ";
     cin >> inputName;
 
     cout << "What for name do you want for your output file: ";
@@ -130,8 +130,8 @@ int main ( ) {
     informationBlock();
 
     userQuestions(answer, inputName, outputName);
-    ifstream input(inputName, ios::in);
-    ofstream output(outputName, ios::out);
+    ifstream input(inputName + ".txt", ios::in);
+    ofstream output(outputName + ".txt", ios::out);
 
     getNumbers(input);
 
