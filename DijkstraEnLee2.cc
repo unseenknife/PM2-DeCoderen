@@ -53,11 +53,19 @@ void startBeginningOfFile(ifstream & input){
 * Reverse the given number
 *
 * @param number, an integer argument
+* @param error, an call by reference bool argument
 * @return the reversed number
 */
-int numberReverse(int number){
+int numberReverse(int number, bool & error){
     int reversedNumber = 0;
+
     while(number > 0){
+        // looks if the reversedNumber is going above INT_MAX or under INT_MIN
+        if(reversedNumber > (INT_MAX / 10) - (number %10) ||
+           reversedNumber < INT_MIN / 10 - (number %10)){
+            error = true;
+            return 0;
+        }
         reversedNumber = (reversedNumber * 10) + (number %10);
         number = number/10;
     }
@@ -68,10 +76,11 @@ int numberReverse(int number){
 * Looks if a number is a palindrome
 *
 * @param number, an integer argument
+* @param error, an call by reference bool argument
 * @return bool if number is a palindrome
 */
-bool isPalindrome(int number){
-    return (number == numberReverse(number));
+bool isPalindrome(int number, bool & error){
+    return (number == numberReverse(number, error));
 }
 
 /**
@@ -80,13 +89,30 @@ bool isPalindrome(int number){
 * @param input, an input file
 * @return bool if number is a palindrome
 */
-bool isLychrel(int number){
+bool isLychrel(int number, int & iteration, bool & error){
     int temp = number;
     int reversedNumber;
-    for(int i = 0; i < 500; i++){
-        reversedNumber = numberReverse(temp);
-        if(isPalindrome(reversedNumber + number)){
+    // for a sample of iterations till palindrome
+    // highest record of iteration till palindrome is 261
+    for(int i = 1; i < 500; i++){
+        reversedNumber = numberReverse(temp, error);
+        if(error){
+            cout << number << ": reversing number error" << endl;
             return false;
+        }
+        if(reversedNumber == temp){
+            iteration = 0;
+            return false;
+        }
+        if((reversedNumber + temp < 0)){
+            cout << number << ": reversing number OK, adding up error!" << endl;
+            error = true;
+            return false;
+        }else{
+            if(isPalindrome(reversedNumber + temp, error)){
+                iteration = i;
+                return false;
+            }
         }
         temp = temp + reversedNumber;
     }
@@ -104,8 +130,11 @@ void getNumbers(ifstream & input){
     char kar = input.get();
     int number = 0;
     int lastNumber = 0;
+    int iteration = 0;
+    bool error;
 
     while(!input.eof()){
+        error = false;
         if('0' <= kar && kar <= '9'){
             number = kar - '0';
             if(lastNumber != 0){
@@ -116,8 +145,18 @@ void getNumbers(ifstream & input){
             }
         }
         else{
-            if(lastNumber != 0 && isLychrel(lastNumber)){
-                cout << lastNumber << " is a Lychrel number" << endl;
+            if(lastNumber != 0){
+                if(isLychrel(lastNumber, iteration, error)){
+                    cout << lastNumber << " is a Lychrel number" << endl;
+                }
+                else if(error == false){
+                    if(iteration == 0){
+                        cout << lastNumber << " is a palindrome" << endl;
+                    }else{
+                        cout << lastNumber << " has " << iteration;
+                        cout << " iterations" << endl;
+                    }
+                }
             }
             lastNumber = 0;
         }
